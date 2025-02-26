@@ -6,8 +6,6 @@ import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.models.ChatCompletionCreateParams;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import javax.swing.text.html.Option;
 import java.util.Map;
 import java.util.Optional;
 

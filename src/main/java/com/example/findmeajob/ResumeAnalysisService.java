@@ -18,7 +18,7 @@ public class ResumeAnalysisService {
         this.client = new OpenAIOkHttpClient.Builder().apiKey(apiKey).build();
     }
 
-    public Map analyzeResume(String resumeText) {
+    public Map<String, Object> analyzeResume(String resumeText){
         String prompt = """
                 Extract the following details from the resume and return as a JSON object:
                 {

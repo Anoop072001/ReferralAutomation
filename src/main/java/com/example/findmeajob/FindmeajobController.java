@@ -1,10 +1,10 @@
 package com.example.findmeajob;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -43,15 +43,23 @@ public class FindmeajobController {
         }
     }
     @PostMapping("/generate-referral")
-    public ResponseEntity<Map<String, String>> generateReferral(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Map<String, String>> generateReferral(@RequestParam("file") MultipartFile file,@RequestParam("customMsg") String customMsg) {
         try {
             String extractedText = resumeParserService.extractText(file);
             Map<String, Object> analysis = resumeAnalysisService.analyzeResume(extractedText);
-            String referralMessage = referralGenerationService.generateReferralMessage(analysis);
+            String referralMessage = referralGenerationService.generateReferralMessage(analysis,customMsg);
             return ResponseEntity.ok(Map.of("referralMessage", referralMessage));
         } catch (IOException e) {
             return ResponseEntity.status(500).body(Map.of("error", "Error processing resume: " + e.getMessage()));
         }
+    }
+    @GetMapping("/auth/user")
+    public ResponseEntity<?> getUser(@AuthenticationPrincipal OAuth2User user) {
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "User not authenticated"));
+        }
+        return ResponseEntity.ok(user.getAttributes());
     }
 }
 

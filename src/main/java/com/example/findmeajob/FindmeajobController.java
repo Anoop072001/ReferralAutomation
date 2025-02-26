@@ -53,14 +53,7 @@ public class FindmeajobController {
             return ResponseEntity.status(500).body(Map.of("error", "Error processing resume: " + e.getMessage()));
         }
     }
-    @GetMapping("/auth/user")
-    public ResponseEntity<?> getUser(@AuthenticationPrincipal OAuth2User user) {
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "User not authenticated"));
-        }
-        return ResponseEntity.ok(user.getAttributes());
-    }
+
 }
 
 

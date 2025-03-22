@@ -49,4 +49,38 @@ public class LinkedInReferralService {
         var response = client.chat().completions().create(request);
         return response.choices().get(0).message().content().orElse("").replaceFirst("^Optional\\[(.*)]$", "$1");
     }
+
+    public String generateColdEmail(Map<String, Object> resumeData,String customMsg) {
+        String prompt;
+        if(customMsg != null) {
+            prompt = """
+                    Act like you are""" + resumeData.get("name") + """
+                    and you are writing this cold email based on the following resume details about yourself, generate a professional cold mail asking for a referral in their company XYZ:
+                    with Experience:""" + resumeData.get("experience") + """
+                    and Skills:""" + resumeData.get("skills") + """
+                    with Education:""" + resumeData.get("education") + """
+                    and"""+resumeData.get("name")+"""
+                    also wanted this message added in this"""+customMsg+""" 
+                    The email should be engaging, concise, and professional.
+                    """;
+        }
+        else{
+            prompt = """
+                    Act like you are""" + resumeData.get("name") + """
+                    and you are writing this cold email based on the following resume details about yourself, generate a professional cold mail asking for a referral in their company XYZ:
+                    with Experience:""" + resumeData.get("experience") + """
+                    and Skills:""" + resumeData.get("skills") + """
+                    with Education:""" + resumeData.get("education") + """
+                    
+                    The email should be engaging, concise, and professional.
+                    """;
+        }
+        ChatCompletionCreateParams request = ChatCompletionCreateParams.builder()
+                .model("gpt-3.5-turbo")
+                .addUserMessage(prompt)
+                .build();
+
+        var response = client.chat().completions().create(request);
+        return response.choices().get(0).message().content().orElse("").replaceFirst("^Optional\\[(.*)]$", "$1");
+    }
 }

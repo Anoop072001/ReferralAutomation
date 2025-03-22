@@ -36,10 +36,11 @@ public class LinkedInJobSearchService {
     public Map<String,Object> searchJobs(String jobTitle, String location) throws IOException, InterruptedException {
 
 
+        jobTitle = jobTitle.replaceAll(" ","%20");
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://linkedin-api8.p.rapidapi.com/search-jobs?keywords=" + jobTitle + "&locationId=" + geoIds.get(location) + "&datePosted=anyTime&sort=mostRelevant"))
+                .uri(URI.create("https://linkedin-data-api.p.rapidapi.com/search-jobs-v2?keywords=" + jobTitle + "&locationId=" + geoIds.get(location) + "&datePosted=anyTime&sort=mostRelevant"))
                 .header("x-rapidapi-key", rapidApiKey)
-                .header("x-rapidapi-host", "linkedin-api8.p.rapidapi.com")
+                .header("x-rapidapi-host", "linkedin-data-api.p.rapidapi.com")
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());

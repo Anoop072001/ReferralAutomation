@@ -9,7 +9,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping
-@CrossOrigin(origins = "https://job-matcher-frontend.vercel.app")
+@CrossOrigin(origins = "*")
 public class FindmeajobController {
     private final FindmeajobService resumeParserService;
     private final ResumeAnalysisService resumeAnalysisService;

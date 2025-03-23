@@ -92,7 +92,6 @@ public class LinkedInReferralService {
 
     public String getContent(ChatCompletion response) throws JsonProcessingException {
         String responseJson = objectMapper.writeValueAsString(response);
-        System.out.println(responseJson);
         Map<String, Object> responseMap = objectMapper.readValue(responseJson, Map.class);
         List<Map<String, Object>> choices = (List<Map<String, Object>>) responseMap.get("choices");
         if (choices == null || choices.isEmpty()) {

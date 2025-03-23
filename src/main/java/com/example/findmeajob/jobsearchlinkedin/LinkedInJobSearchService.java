@@ -25,12 +25,14 @@ public class LinkedInJobSearchService {
     @Value("${rapidapi.key}")
     private String rapidApiKey;
     Map<String, String> geoIds = new HashMap<>(){{
-        put("Bengaluru","105214831");
-        put("Kochi","100100512");
-        put("Chennai","106888327");
-        put("Mumbai","106164952");
-        put("Delhi","106187582");
-        put("Kolkata","111795395");
+        put("bengaluru","105214831");
+        put("bangalore","105214831");
+        put("kochi","100100512");
+        put("chennai","106888327");
+        put("mumbai","106164952");
+        put("new delhi","106187582");
+        put("delhi","106187582");
+        put("kolkata","111795395");
     }};
 
     public Map<String,Object> searchJobs(String jobTitle, String location) throws IOException, InterruptedException {
@@ -38,7 +40,7 @@ public class LinkedInJobSearchService {
 
         jobTitle = jobTitle.replaceAll(" ","%20");
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://linkedin-data-api.p.rapidapi.com/search-jobs-v2?keywords=" + jobTitle + "&locationId=" + geoIds.get(location) + "&datePosted=anyTime&sort=mostRelevant"))
+                .uri(URI.create("https://linkedin-data-api.p.rapidapi.com/search-jobs-v2?keywords=" + jobTitle + "&locationId=" + geoIds.get(location.toLowerCase()) + "&datePosted=anyTime&sort=mostRelevant"))
                 .header("x-rapidapi-key", rapidApiKey)
                 .header("x-rapidapi-host", "linkedin-data-api.p.rapidapi.com")
                 .method("GET", HttpRequest.BodyPublishers.noBody())
